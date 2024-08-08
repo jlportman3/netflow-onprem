@@ -25,6 +25,7 @@ RUN echo "php_admin_flag[log_errors] = on" >> /usr/local/etc/php-fpm.d/www.conf
 
 RUN apk add --no-cache \
     curl \
+    git \
     libxml2-dev \
     php-soap \
     libzip-dev \

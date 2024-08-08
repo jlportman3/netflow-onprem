@@ -46,10 +46,6 @@ Edit the `.env` file which was created in the previous steps and replace the val
 ### Run installation script
 
 ```bash
-sudo apt-get -y update && sudo apt-get -y upgrade && sudo apt-get -y install git unzip
-git clone https://github.com/SonarSoftwareInc/netflow-onprem.git
-cd netflow-onprem
-cp .env.example .env
 chmod +x ./install.sh
 TODO: SOME REALLY AWESOME SETUP COMMAND HERE
 ```
