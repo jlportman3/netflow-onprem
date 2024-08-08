@@ -25,13 +25,15 @@ the machine that you are running each of the steps on as it will be needed for i
 accessing the machine via console or SSH for all of the following steps:
 
 ### Updating and pulling repository
+The following commands will get the latest updates for your distribution and install a couple of needed packages.
+Following that it will pull all of the necessary files from the Sonar repository.  You will then need to prepare a few
+files for the steps that follow.
 
 ```bash
 sudo apt-get -y update && sudo apt-get -y upgrade && sudo apt-get -y install git unzip
 git clone https://github.com/SonarSoftwareInc/netflow-onprem.git
 cd netflow-onprem
 cp .env.example .env
-TODO: SOME REALLY AWESOME SETUP COMMAND HERE
 ```
 
 ### Environment setup
@@ -42,6 +44,15 @@ Edit the `.env` file which was created in the previous steps and replace the val
 `SONAR_TOKEN=<Sonar User personal access token>`
 
 ### Run installation script
+
+```bash
+sudo apt-get -y update && sudo apt-get -y upgrade && sudo apt-get -y install git unzip
+git clone https://github.com/SonarSoftwareInc/netflow-onprem.git
+cd netflow-onprem
+cp .env.example .env
+chmod +x ./install.sh
+TODO: SOME REALLY AWESOME SETUP COMMAND HERE
+```
 
 ## Netflow Setup
 Point netflow on routers here, watch the magic happen. (TODO)
