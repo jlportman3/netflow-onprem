@@ -53,6 +53,4 @@ RUN chown -R laravel:laravel /var/www
 
 USER laravel
 
-RUN composer install
-
 CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
