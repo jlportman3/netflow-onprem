@@ -9,7 +9,8 @@ data collected through Netflow.
 reach out to support@sonar.software for help. We are more than happy to help you get your portal setup!_**
 
 The instructions that follow have been tested running Ubuntu 24.04 LTS release but should support any operating system
-capable of running Docker properly.  
+capable of running Docker properly.  This host system should be dedicated to the Netflow On Premise processing and not
+shared with other services. 
 
 ## Sonar User Configuration
 Sonar would recommend that you create a dedicated user for the processor and that the user only be given limited

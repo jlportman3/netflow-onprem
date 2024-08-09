@@ -51,6 +51,9 @@ RUN mkdir -p /usr/src/php/ext/redis \
 
 RUN chown -R laravel:laravel /var/www
 
+ADD ./app_init.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/app_init.sh
+
 USER laravel
 
 CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
