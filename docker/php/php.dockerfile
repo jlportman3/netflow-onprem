@@ -49,6 +49,10 @@ RUN mkdir -p /usr/src/php/ext/redis \
     && echo 'redis' >> /usr/src/php-available-exts \
     && docker-php-ext-install redis
 
+RUN chown -R laravel:laravel /var/www
+
 USER laravel
+
+RUN composer install
 
 CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
