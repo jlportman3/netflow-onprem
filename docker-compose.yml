@@ -54,6 +54,7 @@ services:
     volumes:
       - ./src:/var/www/html:delegated
       - ./docker/php/custom.php.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ./netflowData:/var/www/html/storage/app/netflowData
     networks:
       - laravel
     restart: unless-stopped
@@ -69,6 +70,23 @@ services:
       test: ["CMD", "redis-cli", "ping"]
       retries: 3
       timeout: 5s
+    networks:
+      - laravel
+    restart: unless-stopped
+
+  nfdump:
+    container_name: "nfdump"
+    build:
+      context: ./docker/nfdump
+      dockerfile: nfdump.dockerfile
+      args:
+        - NFDUMP_VERSION=${NFDUMP_VERSION:-1.7.4}
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    ports:
+      - "${NFDUMP_FORWARD_PORT:-2055}:2055"
+    volumes:
+      - ./netflowData:/netflowData
     networks:
       - laravel
     restart: unless-stopped
@@ -127,3 +145,6 @@ volumes:
 networks:
   laravel:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.68.0/24

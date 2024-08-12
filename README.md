@@ -10,7 +10,13 @@ reach out to support@sonar.software for help. We are more than happy to help you
 
 The instructions that follow have been tested running Ubuntu 24.04 LTS release but should support any operating system
 capable of running Docker properly.  This host system should be dedicated to the Netflow On Premise processing and not
-shared with other services. 
+shared with other services.  
+
+```
+WARNING:
+BECAUSE NETFLOW TRAFFIC REQUIRES ACCURRATE TIMESTAMPS THE HOST SYSTEM WILL BE CONFIGURED WITH THE UTC TIMEZONE AND WILL
+SETUP NTP SERVERS SO THAT RELIABILITY IS MAINTAINED.
+```
 
 ## Sonar User Configuration
 Sonar would recommend that you create a dedicated user for the processor and that the user only be given limited
