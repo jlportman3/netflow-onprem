@@ -47,6 +47,7 @@ services:
       context: ./docker/php
       dockerfile: php.dockerfile
       args:
+        - NFDUMP_VERSION=${NFDUMP_VERSION:-1.7.4}
         - UID=${UID:-1000}
         - GID=${GID:-1000}
     ports:
@@ -97,6 +98,7 @@ services:
       context: ./docker/php
       dockerfile: php.dockerfile
       args:
+        - NFDUMP_VERSION=${NFDUMP_VERSION:-1.7.4}
         - UID=${UID:-1000}
         - GID=${GID:-1000}
     volumes:
@@ -125,6 +127,7 @@ services:
       context: ./docker/php
       dockerfile: php.dockerfile
       args:
+        - NFDUMP_VERSION=${NFDUMP_VERSION:-1.7.4}
         - UID=${UID:-1000}
         - GID=${GID:-1000}
     volumes:
