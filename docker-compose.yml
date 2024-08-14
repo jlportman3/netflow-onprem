@@ -85,7 +85,7 @@ services:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
     ports:
-      - "${NFDUMP_FORWARD_PORT:-2055}:2055"
+      - "${NFDUMP_FORWARD_PORT:-2055}:2055/udp"
     volumes:
       - ./netflowData:/netflowData
     networks:

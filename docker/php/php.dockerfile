@@ -76,6 +76,9 @@ RUN  \
     && apk del build-deps
 
 WORKDIR /var/www/html
+ADD ./laravel-cron /etc/crontabs
+RUN chown laravel:laravel /etc/crontabs/laravel-cron
+
 USER laravel
 
 CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
