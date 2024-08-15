@@ -72,7 +72,7 @@ cp ./.env ./src/.env
 printf -v UNIQUE_APP_KEY "%q" "base64:$(head -c32 /dev/urandom | base64)"
 sed -i "s;APP_KEY=base64:UNIQUE_KEY_NEEDED;APP_KEY=${UNIQUE_APP_KEY};g" ./src/.env
 
-# Bring up the docker images and after waiting for them to run perform the intial app initialization
+# Bring up the docker images and after waiting for them to run perform the initial app initialization
 docker compose up -d
 until [ "`docker inspect -f {{.State.Running}} php`"=="true" ]; do
     sleep 0.1;
