@@ -41,6 +41,7 @@ RUN apk add --no-cache \
     freetype-dev \
     libpq-dev \
     libtool \
+    supervisor \
     bzip2-dev
 
 RUN docker-php-ext-install pgsql pdo pdo_pgsql mbstring exif zip soap pcntl bcmath curl zip opcache
@@ -79,6 +80,12 @@ WORKDIR /var/www/html
 ADD ./laravel-cron /etc/crontabs
 RUN chown laravel:laravel /etc/crontabs/laravel-cron
 
+# Setup the supervisor job for PHP & Laravel workers
+RUN rm /etc/supervisord.conf
+ADD ./supervisord.conf /etc/
+
+
 USER laravel
 
-CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
+#CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
+CMD ["/usr/bin/supervisord"]

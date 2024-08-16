@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,6 +38,47 @@ GQL;
                 "ip" => $this->ip,
             ]
         ];
+
+        return [
+            "query" => $query,
+            "variables" => $variables
+        ];
+    }
+
+    public function updateMutation(): array
+    {
+        $query = <<<GQL
+mutation updateMutation(\$input: UpdateNetflowOnPremiseMutationInput) {
+  updateNetflowOnPremise(id: {$this->id} input: \$input) {
+    id
+    name
+    ip
+  }
+}
+GQL;
+
+        $variables = [
+            "input" => [
+                "name" => $this->name,
+                "ip" => $this->ip,
+                "statistics" => json_encode($this->statistics),
+            ]
+        ];
+        if (isset($this->last_processed_timestamp)) {
+            $variables["input"]["last_processed_timestamp"] = Carbon::parse($this->last_processed_timestamp)->toDateTimeString();
+        } else {
+            $variables["input"]["unset_last_processed_timestamp"] = true;
+        }
+        if (isset($this->last_processed_filename)) {
+            $variables["input"]["last_processed_filename"] = $this->last_processed_filename;
+        } else {
+            $variables["input"]["unset_last_processed_filename"] = true;
+        }
+        if (isset($this->last_processed_size)) {
+            $variables["input"]["last_processed_size"] = $this->last_processed_size;
+        } else {
+            $variables["input"]["unset_last_processed_size"] = true;
+        }
 
         return [
             "query" => $query,

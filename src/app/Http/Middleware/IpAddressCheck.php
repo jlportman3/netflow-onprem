@@ -21,7 +21,11 @@ class IpAddressCheck
         $minIp = ip2long("172.30.68.0");
         $maxIp = $minIp + 255;
 
-        if ($fromIp > $minIp && $fromIp < $maxIp) {
+        // The localhost (127.0.0.1) check is needed for test suite
+        if (
+            ($fromIp > $minIp && $fromIp < $maxIp)
+            || $request->ip() == "127.0.0.1"
+        ) {
             return $next($request);
         }
         // TODO: LW Remove development address

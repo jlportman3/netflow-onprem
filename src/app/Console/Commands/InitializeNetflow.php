@@ -58,8 +58,6 @@ class InitializeNetflow extends Command
             $this->error($body->errors[0]->message ?? "An unknown error has occurred");
             exit;
         }
-        ray(is_null($body->data->createNetflowOnPremise));
-        ray($body);
         $netflow->id = $body->data->createNetflowOnPremise->id ?? null;
         $netflow->save();
     }
