@@ -87,5 +87,4 @@ ADD ./supervisord.conf /etc/
 
 USER laravel
 
-#CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]

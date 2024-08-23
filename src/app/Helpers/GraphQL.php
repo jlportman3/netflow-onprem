@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Config;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
 
@@ -13,11 +14,11 @@ class GraphQL
     public function __construct()
     {
         $this->client = new Client([
-            "base_uri" => env("SONAR_URL") . "/api/graphql",
+            "base_uri" => Config::get("sonar.url") . "/api/graphql",
             "timeout" => 60,
             "headers" => [
                 "Accept" => "application/json",
-                "Authorization" => "Bearer " . env("SONAR_TOKEN"),
+                "Authorization" => "Bearer " . Config::get("sonar.token"),
             ],
         ]);
     }

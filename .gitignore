@@ -9,6 +9,9 @@
 /storage/*.key
 /vendor
 /src/vendor
+/src/.composer
+/src/.config
+.ash_history
 .env
 .env.backup
 .env.production

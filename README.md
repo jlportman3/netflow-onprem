@@ -47,15 +47,20 @@ cp .env.example .env
 ### Environment setup
 Edit the `.env` file which was created in the previous steps and replace the values as specified below:
 
-`SONAR_URL=https://myisp.sonar.software`
+`SONAR_URL=https://myisp.sonar.software` - The URL used to access your Sonar application.  This should not have a 
+trailing '/' at the end, like the example provided.
 
-`SONAR_TOKEN=<Sonar User personal access token>`
+`SONAR_TOKEN=<Sonar User personal access token>` - The access token created and saved in the Sonar setup directions above.
+
+`SONAR_NETFLOW_NAME="Netflow On Premise 1"` - This will be the name displayed in the Sonar app for this host.
+
+`SONAR_NETFLOW_IP=127.0.0.1` - This needs to be adjusted to the public IP address of this host
 
 ### Run installation script
 
 ```bash
 chmod +x ./install.sh
-TODO: SOME REALLY AWESOME SETUP COMMAND HERE
+sudo ./install.sh
 ```
 
 ## Netflow Setup
