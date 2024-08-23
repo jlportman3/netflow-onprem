@@ -64,20 +64,21 @@ if lsof -Pi -sTCP:LISTEN | grep -P ':(80|443)[^0-9]' >/dev/null ; then
     [[ ! $REPLY =~ ^[Yy]$ ]] && exit 1;
 fi
 
-# All checks passed we will now change ownership of the app files to the user / group used by docker images
-# Then we will copy the main .env file over and create a unique app key for the installation.
-chown -R 1000:1000 ./src
-chown -R 1000:1000 ./netflowData
-cp ./.env ./src/.env
+# All checks passed:
+# Copy the main .env file over and create a unique app key for the installation.
+# Change ownership of the app files to the user / group used by docker images
+cp -f ./.env ./src/.env
 printf -v UNIQUE_APP_KEY "%q" "base64:$(head -c32 /dev/urandom | base64)"
 sed -i "s;APP_KEY=base64:UNIQUE_KEY_NEEDED;APP_KEY=${UNIQUE_APP_KEY};g" ./src/.env
+chown -R 1000:1000 ./src
+chown -R 1000:1000 ./netflowData
 
 # Bring up the docker images and after waiting for them to run perform the initial app initialization
 docker compose up -d
 until [ "`docker inspect -f {{.State.Running}} php`"=="true" ]; do
     sleep 0.1;
 done;
-docker exec php sh -c "/usr/local/bin/app_init.sh"
+docker exec --env-file ./.env php sh -c "/usr/local/bin/app_init.sh"
 
 # SUCCESS - Let user know and provide the app key for backing up
 echo "##########"

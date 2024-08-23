@@ -18,7 +18,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 RUN delgroup dialout
 
 RUN addgroup -g ${GID} --system laravel
-RUN adduser -G laravel --system -D -s /bin/sh -u ${UID} laravel
+RUN adduser -G laravel --system -D -s /bin/sh -h /var/www/html -u ${UID} laravel
 
 RUN sed -i "s/user = www-data/user = laravel/g" /usr/local/etc/php-fpm.d/www.conf
 RUN sed -i "s/group = www-data/group = laravel/g" /usr/local/etc/php-fpm.d/www.conf
