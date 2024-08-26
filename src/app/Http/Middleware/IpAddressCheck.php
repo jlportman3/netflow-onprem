@@ -29,7 +29,7 @@ class IpAddressCheck
             return $next($request);
         }
         // TODO: LW Remove development address
-        if ($request->ip() == "192.168.3.18") {
+        if ($request->ip() == "192.168.3.23") {
             return $next($request);
         }
 

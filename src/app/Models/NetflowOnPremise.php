@@ -20,6 +20,29 @@ class NetflowOnPremise extends Model
         ];
     }
 
+    public function readQuery(): array {
+        $query = <<<GQL
+query netflowOnPremises {
+  netflow_on_premises(id: {$this->id}) {
+    entities {
+      id
+      name
+      ip
+      last_processed_filename
+      last_processed_size
+      last_processed_timestamp
+      statistics
+    }
+  }
+}
+GQL;
+
+        return [
+            "query" => $query,
+        ];
+
+    }
+
     public function createMutation(): array
     {
         $query = <<<GQL
