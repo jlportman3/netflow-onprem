@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('netflow_on_premises', function (Blueprint $table) {
+        Schema::create("netflow_on_premises", function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->ipAddress('ip');
-            $table->dateTime('last_processed_timestamp')->nullable();
-            $table->string('last_processed_filename')->nullable();
-            $table->integer('last_processed_size')->nullable();
-            $table->json('statistics')->nullable();
+            $table->string("name");
+            $table->ipAddress("ip");
+            $table->dateTime("last_processed_timestamp")->nullable();
+            $table->string("last_processed_filename")->nullable();
+            $table->integer("last_processed_size")->nullable();
+            $table->json("statistics")->nullable();
             $table->timestamps(6);
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('netflow_on_premises');
+        Schema::dropIfExists("netflow_on_premises");
     }
 };

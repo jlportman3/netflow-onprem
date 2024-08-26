@@ -25,7 +25,7 @@ class InitializeNetflow extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $netflow = NetflowOnPremise::first();
         if (

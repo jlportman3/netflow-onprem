@@ -15,8 +15,8 @@ class NetflowOnPremise extends Model
     protected function casts(): array
     {
         return [
-            'last_processed_timestamp' => 'datetime',
-            'statistics' => 'array',
+            "last_processed_timestamp" => "datetime",
+            "statistics" => "array",
         ];
     }
 

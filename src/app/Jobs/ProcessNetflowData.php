@@ -3,6 +3,8 @@
 namespace App\Jobs;
 
 use App\Helpers\GraphQL;
+use App\Models\Account;
+use App\Models\DataUsage;
 use App\Models\NetflowOnPremise;
 use Carbon\Carbon;
 use Exception;
@@ -30,7 +32,6 @@ class ProcessNetflowData implements ShouldQueue, ShouldBeUnique
 
     public function handle(): void
     {
-        ray($this->file);
         $this->gql = new GraphQL();
         $netflow = NetflowOnPremise::first();
 
@@ -73,13 +74,45 @@ class ProcessNetflowData implements ShouldQueue, ShouldBeUnique
                 return;
             }
 
+            $this->writeUsage();
+
             $this->adjustTotals();
             $netflow->statistics = $this->statistics;
             $this->updateProgress($netflow);
+            $this->accountMap = [];
         } while ($netflow->last_processed_filename !== $filename);
     }
 
-    public function processFile(string $file): bool
+    private function writeUsage(): void {
+        foreach ($this->usageMap as $accountId => $usage) {
+            $account = Account::find($accountId);
+            if (is_null($account)) {
+                $account = Account::create([
+                    "id" => $accountId,
+                    "bytes_in" => 0,
+                    "bytes_out" => 0,
+                ]);
+                DataUsage::create([
+                    "end_time" => $usage["end"]->subMillisecond(),
+                    "bytes_in" => 0,
+                    "bytes_out" => 0,
+                    "account_id" => $accountId,
+                ]);
+            }
+            $account->bytes_in += $usage["bytes_in"];
+            $account->bytes_out += $usage["bytes_out"];
+            $account->save();
+            DataUsage::create([
+                "end_time" => $usage["end"]->toISOString(),
+                "bytes_in" => $account->bytes_in,
+                "bytes_out" => $account->bytes_out,
+                "account_id" => $accountId,
+            ]);
+        }
+        $this->usageMap = [];
+    }
+
+    private function processFile(string $file): bool
     {
         $ipList = $this->findAllIpAssignments();
         if (empty($ipList)) {
@@ -93,7 +126,6 @@ class ProcessNetflowData implements ShouldQueue, ShouldBeUnique
         foreach ($flows as $flow) {
             $this->processFlow($flow);
         }
-        ray($this->usageMap);
         return true;
     }
 
@@ -109,7 +141,6 @@ class ProcessNetflowData implements ShouldQueue, ShouldBeUnique
                 $this->accountMap[$ip->subnet] = $ip->account_id;
             }
         }
-        ray($this->accountMap);
     }
 
 
@@ -234,7 +265,6 @@ GQL;
 
     public function updateProgress(NetflowOnPremise $netflow): void
     {
-        ray($netflow);
         $netflow->save();
         $response = $this->gql->post($netflow->updateMutation());
         $body = json_decode($response->getBody());
@@ -252,6 +282,7 @@ GQL;
         $this->statistics["total"]["bytes_in"] += $this->statistics["last"]["bytes_in"];
         $this->statistics["total"]["bytes_out"] += $this->statistics["last"]["bytes_out"];
         $this->statistics["total"]["flows"] += $this->statistics["last"]["flows"];
+        $this->statistics["usage_records"] = DataUsage::count();
     }
 
     private function incrementFile(NetflowOnPremise $netflow): string
@@ -295,6 +326,7 @@ GQL;
                 "bytes_out" => 0,
                 "flows" => 0,
             ],
+            "usage_records" => 0,
         ];
         $fileParts = explode(".", $filename);
         if (count($fileParts) !== 2 || $fileParts[0] !== "nfcapd") {
