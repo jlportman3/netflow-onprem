@@ -77,14 +77,12 @@ RUN  \
     && apk del build-deps
 
 WORKDIR /var/www/html
-ADD ./laravel-cron /etc/crontabs
-RUN chown laravel:laravel /etc/crontabs/laravel-cron
+ADD ./laravel-cron /etc/crontabs/laravel
+RUN chown laravel:laravel /etc/crontabs/laravel
+RUN /usr/bin/crontab /etc/crontabs/laravel
 
 # Setup the supervisor job for PHP & Laravel workers
 RUN rm /etc/supervisord.conf
 ADD ./supervisord.conf /etc/
-
-
-USER laravel
 
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
