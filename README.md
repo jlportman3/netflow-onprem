@@ -23,9 +23,7 @@ IS MAINTAINED.
 Sonar would recommend that you create a dedicated user for the processor and that the user only be given limited
 permissions to accomplish this task.  
 
-=== TODO: Get Mitchell to write documentation for roles / user setup ===
-1. Needs to be able to read accounts, ip addresses, subnets,...
-2. Needs CREATE_DATA_USAGE
+Directions for setting this up can be found in the [Sonar Knowledge Base](https://docs.sonar.expert/networking/netflow-on-premise#creating_your_netflow_on_premises_user_and_user_role).
 
 ## Getting Started
 The following steps will walk you through getting up and running in quick order.  Make sure that you have root access to
@@ -54,7 +52,25 @@ trailing '/' at the end, like the example provided.
 
 `SONAR_NETFLOW_NAME="Netflow On Premise 1"` - This will be the name displayed in the Sonar app for this host.
 
-`SONAR_NETFLOW_IP=127.0.0.1` - This needs to be adjusted to the public IP address of this host
+`SONAR_NETFLOW_IP=127.0.0.1` - This needs to be adjusted to the public IP address of this host.
+
+`NFDUMP_MAXLIFE=7d` - This is the number of days the raw data files will be kept on disk.  BEWARE that Netflow data files
+can consume a large amount of space and you should make sure you have storage available for this.  
+
+`NFDUMP_MAXSIZE=100G` - This is the total size for all of the raw data files that will be kept on disk.  Make sure the
+storage location has approximately 10% more than this value.  BEWARE - should storage be exhausted the application will not
+function properly!
+
+If you wish to retain the raw files for longer periods of time we suggest moving them to another storage location.  Make
+sure that they are not moved before they have been processed by the system and posted into Sonar.  You are able to view
+the last file processed in your Sonar app.
+
+`DB_PASSWORD=pleaseChangeMe` - Set this to a unique password in your environment to prevent unauthorized access.
+
+Sonar would suggest leaving ALL other values in the file at their default settings.  Changing any of the other values 
+could have undesired consequences for the application and its ability to perform as expected.
+
+Make sure you have saved these changes before proceeding to the next step.
 
 ### Run installation script
 
@@ -63,8 +79,16 @@ chmod +x ./install.sh
 sudo ./install.sh
 ```
 
+There are a significant amount of items that need to be setup for the installation process including the installation of 
+Docker and building of the docker images.  Depending on your hardware this could take 15-30 minutes to complete, please
+be patient.
+
 ## Netflow Setup
-Point netflow on routers here, watch the magic happen. (TODO)
+At this point everything should be setup to begin the collection and processing of Netflow data.  The last step in the
+process is to setup your hardware (typically routers) to send the correct Netflow data over to the system for collection 
+and reporting.
+
+Directions for setting this up can be found in the [Sonar Knowledge Base](https://docs.sonar.expert/networking/netflow-on-premise#configuring_your_delivery_agent).
 
 
 ## Hardware Requirements

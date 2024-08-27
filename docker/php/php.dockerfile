@@ -86,3 +86,5 @@ RUN rm /etc/supervisord.conf
 ADD ./supervisord.conf /etc/
 
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
+
+USER laravel
