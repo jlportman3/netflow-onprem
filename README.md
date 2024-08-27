@@ -1,5 +1,7 @@
+![Sonar Netflow](doc/sonarNetflow-small.png)
+
 # netflow-onprem
-Netflow on-premise processor
+Sonar Netflow on-premise processor
 
 ## Introduction
 This repository contains everything needed to provide your [Sonar](https://sonar.software) V2 instance with
