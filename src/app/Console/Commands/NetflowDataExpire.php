@@ -25,14 +25,15 @@ class NetflowDataExpire extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
         $netflow = NetflowOnPremise::first();
         if (is_null($netflow)) {
-            exit;
+            return 0;
         }
         $job = (new ExpireNetflowData())
             ->onQueue("default");
         dispatch($job);
+        return 0;
     }
 }

@@ -25,7 +25,7 @@ class InitializeNetflow extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): void
+    public function handle(): int
     {
         $netflow = NetflowOnPremise::first();
         if (
@@ -33,7 +33,7 @@ class InitializeNetflow extends Command
             && ! $this->option("force")
         ) {
             $this->error("Application appears to be initialized! Use --force option to override");
-            exit;
+            return 250;
         }
 
         $gql = new GraphQL();
@@ -56,9 +56,10 @@ class InitializeNetflow extends Command
             || is_null($body->data->createNetflowOnPremise)
         ) {
             $this->error($body->errors[0]->message ?? "An unknown error has occurred");
-            exit;
+            return 251;
         }
         $netflow->id = $body->data->createNetflowOnPremise->id ?? null;
         $netflow->save();
+        return 0;
     }
 }

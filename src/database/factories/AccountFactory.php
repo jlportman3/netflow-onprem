@@ -17,7 +17,8 @@ class AccountFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            "bytes_in" => fake()->randomNumber(7),
+            "bytes_out" => fake()->randomNumber(7),
         ];
     }
 }

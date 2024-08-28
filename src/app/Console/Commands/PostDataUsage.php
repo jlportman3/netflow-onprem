@@ -26,19 +26,20 @@ class PostDataUsage extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): void
+    public function handle(): int
     {
         $netflow = NetflowOnPremise::first();
         if (is_null($netflow)) {
-            exit;
+            return 0;
         }
 
         if (DataUsage::count() === 0) {
-            exit;
+            return 0;
         }
 
         $job = (new ProcessDataUsage())
             ->onQueue("default");
         dispatch($job);
+        return 0;
     }
 }
