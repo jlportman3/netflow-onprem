@@ -13,6 +13,5 @@ php artisan migrate --force
 php artisan migrate:fresh
 
 php artisan optimize:clear
-php artisan optimize
 
 php artisan sonar:netflow:initialize
