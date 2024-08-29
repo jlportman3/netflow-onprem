@@ -78,7 +78,7 @@ docker compose up -d
 until [ "`docker inspect -f {{.State.Running}} php`"=="true" ]; do
     sleep 0.1;
 done;
-docker exec --env-file ./.env php sh -c "/usr/local/bin/app_init.sh"
+docker exec --user laravel --env-file ./.env php sh -c "/usr/local/bin/app_init.sh"
 
 # SUCCESS - Let user know and provide the app key for backing up
 echo "##########"
