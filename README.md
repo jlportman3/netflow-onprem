@@ -8,7 +8,7 @@ This repository contains everything needed to provide your [Sonar](https://sonar
 data collected through Netflow.  
 
 **_If you are a current Sonar customer, and you need assistance with any part of this process, please don't hesitate to 
-reach out to support@sonar.software for help. We are more than happy to help you get your portal setup!_**
+reach out to support@sonar.software for help. We are more than happy to assist!_**
 
 The instructions that follow have been tested running Ubuntu 24.04 LTS release but should support any operating system
 capable of running Docker properly.  This host system should be dedicated to the Netflow On Premise processing and not
@@ -93,9 +93,26 @@ and reporting.
 Directions for setting this up can be found in the [Sonar Knowledge Base](https://docs.sonar.expert/networking/netflow-on-premise#configuring_your_delivery_agent).
 
 
-## Hardware Requirements
-Get the absolutely biggest box (100's of cores, TB's RAM, NVMe SSDs...) with the fastest NIC (6 port 100G LAG or better) that you can afford!  This will ensure you are happy!
-TODO: Fine tune specs above
+## Hardware Guidelines
+Defining the hardware requirements for this device has proven to be a difficult task.  Each environment will have different
+needs and amount of data that is being captured.  However, here are some general guidelines that will help you to scale the
+on-premise processor correctly:
+
+| Component  | Minimum    | Description                                                                                                                                                                                                                                         |
+|:----------:|:----------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|    CPU     | 4 cores    | This should be run on data center grade hardware.  Aggregation of the traffic to the customer level can require a signifant amount or processing power and must be performed in real time. |
+|    RAM     | 16 GB      | As the size of the network / unique IP addresses being monitored grows, so should this value.  If netflow collection traffic approaches 1 Gpbs we would suggested 32 GB minimum. |
+|    Disk    | 150 GB SSD | This needs to be adjusted if you change either of the environment variables previously mentioned that relate to retention.  More importantly data is being constantly written and read from the storage.  High IOPS will ensure a smooth operation. |
+|  Network   | 1 Gpbs     | A good rule of thumb is that Netflow traffic will be about 1% of your total data traffic.  However, there can be spikes in this so make sure you have the network capacity to allow for this. |
+
+Again, these are just basic guidelines for scaling the hardware to meet the needs of your environment.  Sonar would suggest 
+you monitor key metrics on the device to ensure that performance levels are not exceeded.  There are two options if you
+are reaching capacity - increase hardware on the existing server or spin up a second server and have netflow traffic
+split between the devices.  The second option will require adjusting the netflow settings of your network hardware so
+each device is capturing unique traffic.
+
 
 ## Troubleshooting
-This will not break nothing here - famous last words I know!
+
+**_If you are a current Sonar customer, and you need assistance with any part of this process, please don't hesitate to
+reach out to support@sonar.software for help. We are more than happy to assist!_**
