@@ -12,12 +12,7 @@ php artisan make:session-table -q
 php artisan migrate --force
 php artisan migrate:fresh
 
-php artisan cache:clear
-php artisan config:clear
-php artisan view:clear
-
-php artisan route:cache
-php artisan config:cache
+php artisan optimize:clear
 php artisan optimize
 
 php artisan sonar:netflow:initialize
