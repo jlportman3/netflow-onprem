@@ -1,6 +1,7 @@
 #!/bin/ash
 
 cd /var/www/html
+composer update nothing
 rm -f bootstrap/cache/*
 php artisan cache:clear
 php artisan view:clear

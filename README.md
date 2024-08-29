@@ -38,7 +38,7 @@ Following that it will pull all of the necessary files from the Sonar repository
 files for the steps that follow.
 
 ```bash
-sudo apt-get -y update && sudo apt-get -y upgrade && sudo apt-get -y install git unzip
+sudo apt-get -y update && sudo apt-get -y upgrade && sudo apt-get -y install git make unzip
 git clone https://github.com/SonarSoftwareInc/netflow-onprem.git
 cd netflow-onprem
 cp .env.example .env
