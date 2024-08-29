@@ -26,6 +26,7 @@ class ProcessNetflowData implements ShouldQueue, ShouldBeUnique
 
     public function __construct(
         public string $file,
+        public ?string $storagePath = "/netflowData/"
     ) {
         //
     }
@@ -296,7 +297,7 @@ GQL;
         $newDate->addMinutes(5);
 
         $netflow->last_processed_filename = "nfcapd." . $newDate->format("YmdHi");
-        $filename = "/netflowData/" . $newDate->year . "/" . $newDate->format("m") . "/" .
+        $filename = $this->storagePath . $newDate->year . "/" . $newDate->format("m") . "/" .
             $newDate->format("d") . "/" . $netflow->last_processed_filename;
         //  This attempts to skip missing filenames / already processed files until we are in the future
         if (

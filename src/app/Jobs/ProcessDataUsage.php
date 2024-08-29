@@ -17,7 +17,7 @@ class ProcessDataUsage implements ShouldQueue, ShouldBeUnique
     {
         $netflow = NetflowOnPremise::first();
         if (is_null($netflow)) {
-            exit;
+            return;
         }
 
         $dataUsageCount = DataUsage::count();
