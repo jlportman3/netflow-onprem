@@ -25,11 +25,14 @@ if ! [ -x "$(command -v docker)" ]; then
         gnupg-agent \
         software-properties-common
     install -m 0755 -d /etc/apt/keyrings
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-    chmod a+r /etc/apt/keyrings/docker.asc
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker-ubuntu.asc
+    curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker-debian.asc
+    chmod a+r /etc/apt/keyrings/docker-ubuntu.asc
+    chmod a+r /etc/apt/keyrings/docker-debian.asc
+    . /etc/os-release
     echo \
-      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-      $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker-$ID.asc] https://download.docker.com/linux/$ID \
+      $VERSION_CODENAME stable" | \
       tee /etc/apt/sources.list.d/docker.list > /dev/null
     apt-get update
     apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
@@ -48,7 +51,17 @@ case $ID in
       read -p "### WARNING: Unable to configure NTP on Ubuntu server, please make sure accurate time is setup using NTP and UTC timezone [continue]" -i n -n 1 -r
     fi
     ;;
-  *) read -p "### WARNING: Not running Ubuntu, please make sure accurate time is setup using NTP and UTC timezone [continue]" -i n -n 1 -r
+  debian) echo "Running Debian, attempting to enable NTP..."
+    if [ -x "$(command -v timedatectl)" ]; then
+      timedatectl set-timezone UTC
+      write_timesync_conf
+      systemctl restart systemd-timesyncd
+      echo "NTP enabled!"
+    else
+      read -p "### WARNING: Unable to configure NTP on Debian server, please make sure accurate time is setup using NTP and UTC timezone [continue]" -i n -n 1 -r
+    fi
+    ;;
+  *) read -p "### WARNING: Not running on a recognized operating system, please make sure accurate time is setup using NTP and UTC timezone [continue]" -i n -n 1 -r
     ;;
 esac
 

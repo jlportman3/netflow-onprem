@@ -10,9 +10,19 @@ data collected through Netflow.
 **_If you are a current Sonar customer, and you need assistance with any part of this process, please don't hesitate to 
 reach out to support@sonar.software for help. We are more than happy to assist!_**
 
-The instructions that follow have been tested running Ubuntu 24.04 LTS release but should support any operating system
-capable of running Docker properly.  This host system should be dedicated to the Netflow On Premise processing and not
+The instructions that follow have been tested thoroughly running Ubuntu 24.04 LTS release, but should support any operating 
+system capable of running Docker properly.  This host system should be dedicated to the Netflow On Premise processing and not
 shared with other services.  
+
+---
+We have verified that the install process completes with the following other operating systems, though they have not all
+been as thoroughly tested as the recommended one (Ubuntu 24.04 LTS):
+- Ubuntu 18.04 (Bionic Beaver), Ubuntu 20.04 (Focal Fossa), Ubuntu 22.04 (Jammy Jellyfish)
+- Debian 10 (Buster), Debian 11 (Bullseye), Debian 12 (Bookworm)
+
+Some of these operating systems are no longer receiving support and updates!
+
+---
 
 ```
 WARNING:
@@ -79,11 +89,13 @@ Make sure you have saved these changes before proceeding to the next step.
 ```bash
 chmod +x ./install.sh
 sudo ./install.sh
+sudo reboot
 ```
 
 There are a significant amount of items that need to be setup for the installation process including the installation of 
 Docker and building of the docker images.  Depending on your hardware this could take 15-30 minutes to complete, please
-be patient.
+be patient.  At the end we suggest rebooting the server to make sure that you are running all of the latest packages that 
+were installed during the previous steps.
 
 ## Netflow Setup
 At this point everything should be setup to begin the collection and processing of Netflow data.  The last step in the
@@ -113,6 +125,21 @@ each device is capturing unique traffic.
 
 
 ## Troubleshooting
+
+### Restarting docker images
+If you suspect that there might be an issue with your Docker images you can run the following commands logged in under the 
+same account that you installed with to restart them.  Please note that some Netflow data will not be captured during the 
+few seconds they are restarting:
+
+```bash
+cd netflow-onprem
+sudo docker compose restart
+```
+
+If this does not resolved you can try rebooting the host that this is running on as well but again Netflow data will not
+be captured during this time.
+
+---
 
 **_If you are a current Sonar customer, and you need assistance with any part of this process, please don't hesitate to
 reach out to support@sonar.software for help. We are more than happy to assist!_**
