@@ -1,4 +1,4 @@
-FROM alpine:3.20.2
+FROM alpine:3.20.3
 
 ARG NFDUMP_VERSION
 ARG UID
@@ -20,7 +20,7 @@ WORKDIR /tmp
 
 ## Install OS dependencies
 ADD https://github.com/phaag/nfdump/archive/v${NFDUMP_VERSION}.tar.gz /tmp
-RUN apk add --no-cache libtool bzip2-dev curl
+RUN apk add --no-cache bzip2-dev curl libtool
 RUN apk add --no-cache --virtual build-deps autoconf automake m4 pkgconfig make g++ flex byacc
 
 #Build
