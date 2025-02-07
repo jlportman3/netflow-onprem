@@ -1,4 +1,4 @@
-FROM php:8.3.14-fpm-alpine
+FROM php:8.3.14-fpm-alpine3.20
 
 ARG NFDUMP_VERSION
 ARG UID
