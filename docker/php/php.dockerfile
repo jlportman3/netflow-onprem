@@ -42,7 +42,9 @@ RUN apk add --no-cache \
     libpq-dev \
     libtool \
     supervisor \
-    bzip2-dev
+    bzip2-dev \
+    libpcap \
+    libpcap-dev
 
 RUN docker-php-ext-install pgsql pdo pdo_pgsql mbstring exif zip soap pcntl bcmath curl zip opcache
 
@@ -68,7 +70,7 @@ RUN  \
     tar xfz v${NFDUMP_VERSION}.tar.gz  \
     && cd /tmp/nfdump-${NFDUMP_VERSION} \
     && ./autogen.sh  \
-    && ./configure  \
+    && ./configure --enable-nsel --enable-nfpcapd \
     && make  \
     && cd /tmp/nfdump-${NFDUMP_VERSION} && make install  \
     && cd .. \
