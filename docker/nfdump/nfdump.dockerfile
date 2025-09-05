@@ -20,7 +20,7 @@ WORKDIR /tmp
 
 ## Install OS dependencies
 ADD https://github.com/phaag/nfdump/archive/v${NFDUMP_VERSION}.tar.gz /tmp
-RUN apk add --no-cache bzip2-dev curl libtool
+RUN apk add --no-cache bzip2-dev curl libtool libpcap libpcap-dev
 RUN apk add --no-cache --virtual build-deps autoconf automake m4 pkgconfig make g++ flex byacc
 
 #Build
@@ -28,7 +28,7 @@ RUN  \
     tar xfz v${NFDUMP_VERSION}.tar.gz  \
     && cd /tmp/nfdump-${NFDUMP_VERSION} \
     && ./autogen.sh  \
-    && ./configure  \
+    && ./configure --enable-nsel --enable-nfpcapd \
     && make  \
     && cd /tmp/nfdump-${NFDUMP_VERSION} && make install  \
     && cd .. \
